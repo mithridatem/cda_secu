@@ -12,20 +12,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 class RegisterController extends AbstractController
 {
-    private Request $request;
+
     private UserRepository $repo;
    
     public function __construct(UserRepository $repo){
-        $this->request = new Request();
         $this->repo = $repo;
    }
     #[Route('/register', name: 'app_register')]
-    public function addUser(UserPasswordHasherInterface $hash, EntityManagerInterface $em): Response
+    public function addUser(UserPasswordHasherInterface $hash, EntityManagerInterface $em, Request $request): Response
     {
         $msg = "";
         $user = new User();
         $form = $this->createForm(RegisterType::class,$user);
-        $form->handleRequest($this->request);
+        $form->handleRequest($request);
         //test si le formulaire est submit
         if ($form->isSubmitted() && $form->isValid()) {
             //tester si le compte existe déja
@@ -34,7 +33,7 @@ class RegisterController extends AbstractController
             }
             //test si le compte n'existe pas
             else{
-                $pass = $this->request->request->all('register')['password']['first'];
+                $pass = $request->request->all('register')['password']['first'];
                 $hash = $hash->hashPassword($user, $pass);
                 $user->setPassword($hash);
                 $user->setActivated(false);
