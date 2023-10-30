@@ -12,11 +12,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 class RegisterController extends AbstractController
 {
-
+    private EntityManagerInterface $em;
     private UserRepository $repo;
    
-    public function __construct(UserRepository $repo){
+    public function __construct(UserRepository $repo, EntityManagerInterface $em){
         $this->repo = $repo;
+        $this->em = $em;
    }
     #[Route('/register', name: 'app_register')]
     public function addUser(UserPasswordHasherInterface $hash, EntityManagerInterface $em, Request $request): Response
@@ -38,8 +39,8 @@ class RegisterController extends AbstractController
                 $user->setPassword($hash);
                 $user->setActivated(false);
                 $user->setRoles(["ROLE_USER"]);
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
                 $msg = "Le compte : ".$user->getEmail()." a été ajouté en BDD";
             }
         }
