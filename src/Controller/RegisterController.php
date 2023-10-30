@@ -18,9 +18,9 @@ class RegisterController extends AbstractController
     public function __construct(UserRepository $repo, EntityManagerInterface $em){
         $this->repo = $repo;
         $this->em = $em;
-   }
+    }
     #[Route('/register', name: 'app_register')]
-    public function addUser(UserPasswordHasherInterface $hash, EntityManagerInterface $em, Request $request): Response
+    public function addUser(UserPasswordHasherInterface $hash, Request $request): Response
     {
         $msg = "";
         $user = new User();
