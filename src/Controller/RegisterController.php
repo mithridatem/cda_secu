@@ -59,5 +59,19 @@ class RegisterController extends AbstractController
             'msg' => $msg,
             'form' =>$form->createView()
         ]);
-    } 
+    }
+    #[Route('/register/activate/{id}', name: 'app_register_activate')]
+    public function activateUser(?int $id){
+        $recup = $this->repo->find(UtilsService::cleanInput($id));
+        //test si le compte existe
+        if($recup){
+            $recup->setActivated(true);
+            $this->em->flush();  
+            return $this->redirectToRoute('app_login');
+        }
+        //test si le compte n'existe pas
+        else{
+            return $this->redirectToRoute('app_register');
+        }
+    }
 }
