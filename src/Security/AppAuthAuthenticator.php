@@ -47,9 +47,9 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        /* if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
-        } */
+        }
         //récupération du compte
         $recup = $this->repo->findOneBy(['email'=> $request->request->get('email')]);
         //test si le compte est activé
