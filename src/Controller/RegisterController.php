@@ -26,8 +26,8 @@ class RegisterController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function addUser(UserPasswordHasherInterface $hash, Request $request): Response
     {
-        dd($this->messagerie->test());
-        /*  $msg = "";
+    
+        $msg = "";
         $user = new User();
         $form = $this->createForm(RegisterType::class,$user);
         $form->handleRequest($request);
@@ -50,11 +50,13 @@ class RegisterController extends AbstractController
                 $this->em->persist($user);
                 $this->em->flush();
                 $msg = "Le compte : ".$user->getEmail()." a été ajouté en BDD";
+                "Pour activer le compte cliquer sur le lien ci-dessous :
+                <a href='https://localhost:8000/register/activate/1'>Activer</a>";
             }
         }
         return $this->render('register/index.html.twig', [
             'msg' => $msg,
             'form' =>$form->createView()
-        ]);*/
+        ]);
     } 
 }

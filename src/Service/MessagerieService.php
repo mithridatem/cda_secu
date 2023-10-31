@@ -27,21 +27,20 @@ class MessagerieService{
 
         try {
             //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = $this->serveur;                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = $this->login;                     //SMTP username
-            $mail->Password   = $this->password;                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = $this->port;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host       = $this->serveur;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $this->login;
+            $mail->Password   = $this->password;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = $this->port;
 
             //Recipients
             $mail->setFrom($this->login, 'Mailer');
-            $mail->addAddress($destinataire);     //Add a recipient
-
+            $mail->addAddress($destinataire);
             //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->isHTML(true);
             $mail->Subject = $object;
             $mail->Body    = $content;
             $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
