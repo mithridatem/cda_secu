@@ -23,6 +23,10 @@ class RegisterController extends AbstractController
         $this->em = $em;
         $this->messagerie = $messagerie;
     }
+    #[Route('/', name: 'app_register_home')]
+    public function index(){
+        return $this->render('register/home.html.twig');
+    }
     #[Route('/register', name: 'app_register')]
     public function addUser(UserPasswordHasherInterface $hash, Request $request): Response
     {

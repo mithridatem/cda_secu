@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,14 +17,16 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+
 class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
-
+    private UserRepository $repo;
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, UserRepository $repo)
     {
+        $this->repo = $repo;
     }
 
     public function authenticate(Request $request): Passport
@@ -47,9 +50,18 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+        //récupération du compte
+        $recup = $this->repo->findOneBy(['email'=> $request->request->get('email')]);
+        //test si le compte est activé
+        if($recup->isActivated() == true){
+            return new RedirectResponse($this->urlGenerator->generate('app_register_home'));
+        }
+        //test si le compte n'est pas activé
+        else{
+            return new RedirectResponse($this->urlGenerator->generate('app_register_activate', ['id'=> $recup->getId()]));
+        }
         // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        // return new RedirectResponse($this->urlGenerator->generate('app_register_activate', ['id'=> 1]));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
