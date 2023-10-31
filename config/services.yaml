@@ -19,6 +19,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
+    App\Service\MessagerieService:
+        arguments: ['%env(LOGIN_MAIL)%', '%env(PASSWORD_MAIL)%', '%env(SERVEUR_MAIL)%', '%env(PORT_MAIL)%']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
