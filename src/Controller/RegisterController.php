@@ -78,4 +78,19 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
     }
+
+    #[Route('/register/sendmail/{id}', name:'app_register_sendmail')]
+    public function sendMail($id){
+        $user = $this->repo->find(UtilsService::cleanInput($id));
+        if($user){
+            $msg = "Le compte : ".$user->getEmail()." a été ajouté en BDD";
+            $object = "Activation de votre compte";
+            $content ="<h1>Pour activer le compte cliquer sur le lien ci-dessous :</h1>
+            <a href='https://localhost:8000/register/activate/".$user->getId()."'>Activer</a>";
+            $this->messagerie->sendMail($object,$content,$user->getEmail());
+            return $this->redirectToRoute("app_logout");
+        }else{
+            return $this->redirectToRoute("app_register");
+        }
+    }
 }

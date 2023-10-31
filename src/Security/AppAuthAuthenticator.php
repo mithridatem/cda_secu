@@ -47,9 +47,9 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        /* if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
-        }
+        } */
         //récupération du compte
         $recup = $this->repo->findOneBy(['email'=> $request->request->get('email')]);
         //test si le compte est activé
@@ -58,11 +58,11 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
         }
         //test si le compte n'est pas activé
         else{
-            return new RedirectResponse($this->urlGenerator->generate('app_register_activate', ['id'=> $recup->getId()]));
+            return new RedirectResponse($this->urlGenerator->generate('app_register_sendmail', ['id'=> $recup->getId()]));
         }
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('app_register_activate', ['id'=> 1]));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl(Request $request): string
