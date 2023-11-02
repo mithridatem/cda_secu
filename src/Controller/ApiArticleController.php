@@ -66,11 +66,18 @@ class ApiArticleController extends AbstractController
         return $this->json(['error'=>'L\'article a été ajouté en BDD'],200,
         ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
     }
-    #[Route('/api/article/test', name:'app_api_article_test')]
-    public function testUser(Request $request): Response
+    #[Route('/api/article/gentoken', name:'app_api_article_token')]
+    public function genApiToken(Request $request): Response
     {
         $email = $request->get('email');
         $password = $request->get('password');
-        dd($this->jwtService->authentification($email,$password));
+        if($this->jwtService->authentification($email,$password)){
+            $tokenJwt = $this->jwtService->genToken($email); 
+            return $this->json(['token'=>$tokenJwt],200,['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
+        else{
+            return $this->json(['error'=> 'Informations de connexion invalides'],401,
+            ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
     }
 }
