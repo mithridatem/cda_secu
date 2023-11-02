@@ -12,16 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\Article;
+use App\Service\JwtService;
 class ApiArticleController extends AbstractController
 {
     private ArticleRepository $articleRepository;
     private SerializerInterface $serializerInterface;
     private EntityManagerInterface $em;
+    private JWTService $jwtService;
     public function __construct(ArticleRepository $articleRepository, 
-    SerializerInterface $serializerInterface, EntityManagerInterface $em){
+    SerializerInterface $serializerInterface, EntityManagerInterface $em, JwtService $jwtService){
         $this->articleRepository = $articleRepository;
         $this->serializerInterface = $serializerInterface;
         $this->em = $em;
+        $this->jwtService = $jwtService;
     }
 
     #[Route('/api/article', name: 'app_api_article')]
@@ -49,7 +52,8 @@ class ApiArticleController extends AbstractController
         }
     }
     #[Route('/api/article/add', name:'app_api_article_add', methods:'POST')]
-    public function addArticle(Request $request, UserRepository $userRepository): Response{
+    public function addArticle(Request $request, UserRepository $userRepository): Response
+    {
         $json = $request->getContent();
         $data = $this->serializerInterface->decode($json, 'json');
         $article = new Article();
@@ -61,5 +65,12 @@ class ApiArticleController extends AbstractController
         $this->em->flush();
         return $this->json(['error'=>'L\'article a été ajouté en BDD'],200,
         ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+    }
+    #[Route('/api/article/test', name:'app_api_article_test')]
+    public function testUser(Request $request): Response
+    {
+        $email = $request->get('email');
+        $password = $request->get('password');
+        dd($this->jwtService->authentification($email,$password));
     }
 }

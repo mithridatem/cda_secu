@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    token: '%env(TOKEN)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -23,3 +23,5 @@ services:
         arguments: ['%env(LOGIN_MAIL)%', '%env(PASSWORD_MAIL)%', '%env(SERVEUR_MAIL)%', '%env(PORT_MAIL)%']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\JwtService:
+        arguments: ['%env(TOKEN)%']
