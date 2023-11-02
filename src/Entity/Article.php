@@ -28,7 +28,7 @@ class Article
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne]
-   
+    #[Groups('articles')]
     private ?User $author = null;
 
     public function getId(): ?int
