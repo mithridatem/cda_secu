@@ -59,4 +59,15 @@ class JwtService{
         );
         return $token;
     }
+    public function verifyToken($jwt){
+        require_once('../vendor/autoload.php');
+        try {
+            //Décodage du token
+            $token = JWT::decode($jwt, new Key($this->token, 'HS512'));
+            return true;
+        } 
+        catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
 }

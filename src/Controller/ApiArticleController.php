@@ -54,17 +54,28 @@ class ApiArticleController extends AbstractController
     #[Route('/api/article/add', name:'app_api_article_add', methods:'POST')]
     public function addArticle(Request $request, UserRepository $userRepository): Response
     {
-        $json = $request->getContent();
-        $data = $this->serializerInterface->decode($json, 'json');
-        $article = new Article();
-        $article->setTitle(UtilsService::cleanInput($data['title'])); 
-        $article->setContent(UtilsService::cleanInput($data['content'])); 
-        $article->setDate(new \DateTimeImmutable(UtilsService::cleanInput($data['date'])));
-        $article->setAuthor($userRepository->findOneBy(['email'=> UtilsService::cleanInput($data['author']['email'])]));
-        $this->em->persist($article);
-        $this->em->flush();
-        return $this->json(['error'=>'L\'article a été ajouté en BDD'],200,
-        ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        //récupération du token
+        $jwt = substr($request->server->get('HTTP_AUTHORIZATION'),7);
+        $verif = $this->jwtService->verifyToken($jwt);  
+        //test si le token est valide
+        if($verif===true){
+            $json = $request->getContent();
+            $data = $this->serializerInterface->decode($json, 'json');
+            $article = new Article();
+            $article->setTitle(UtilsService::cleanInput($data['title'])); 
+            $article->setContent(UtilsService::cleanInput($data['content'])); 
+            $article->setDate(new \DateTimeImmutable(UtilsService::cleanInput($data['date'])));
+            $article->setAuthor($userRepository->findOneBy(['email'=> UtilsService::cleanInput($data['author']['email'])]));
+            $this->em->persist($article);
+            $this->em->flush();
+            return $this->json(['error'=>'L\'article a été ajouté en BDD'],200,
+            ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
+        //sinon on retourne une erreur
+        else{
+            return $this->json(['error'=>$verif], 401,
+            ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
     }
     #[Route('/api/article/gentoken', name:'app_api_article_token')]
     public function genApiToken(Request $request): Response
@@ -77,6 +88,20 @@ class ApiArticleController extends AbstractController
         }
         else{
             return $this->json(['error'=> 'Informations de connexion invalides'],401,
+            ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
+    }
+
+    #[Route('/api/article/veriftoken', name:'app_api_article_veriftoken')]
+    public function verifApiToken(Request $request): Response{
+        $jwt = substr($request->server->get('HTTP_AUTHORIZATION'),7);
+        $verif = $this->jwtService->verifyToken($jwt);  
+        if($verif===true){
+            return $this->json(['error'=> 'Accés authorisé'],200,
+            ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
+        }
+        else{
+            return $this->json(['error'=>$verif], 401,
             ['Content-Type'=>'application/json', 'Access-Control-Allow-Origin'=>'*']);
         }
     }
