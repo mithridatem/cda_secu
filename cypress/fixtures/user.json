@@ -1,0 +1,14 @@
+{
+    "user":[
+        {"name":"test1", "firstname":"test1", "email":"mail1@mail.fr", "password":"1234"},
+        {"name":"test2", "firstname":"test2", "email":"mail2@mail.fr", "password":"1234"},
+        {"name":"test3", "firstname":"test3", "email":"mail3@mail.fr", "password":"1234"},
+        {"name":"test4", "firstname":"test4", "email":"mail4@mail.fr", "password":"1234"},
+        {"name":"test5", "firstname":"test5", "email":"mail5@mail.fr", "password":"1234"},
+        {"name":"test6", "firstname":"test6", "email":"mail6@mail.fr", "password":"1234"},
+        {"name":"test7", "firstname":"test7", "email":"mail7@mail.fr", "password":"1234"},
+        {"name":"test8", "firstname":"test8", "email":"mail8@mail.fr", "password":"1234"},
+        {"name":"test9", "firstname":"test9", "email":"mail9@mail.fr", "password":"1234"},
+        {"name":"test10", "firstname":"test10", "email":"mail10@mail.fr", "password":"1234"}
+    ]
+}
