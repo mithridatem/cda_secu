@@ -13,7 +13,6 @@ describe('Test utilisateur', () => {
       let statut = true;
       const url = "https://localhost:8000/tests/validation";
       if(text=="Le compte a été mis à jour en BDD"){
-        statut = true;
       }
       else{
         statut = false;
