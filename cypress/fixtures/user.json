@@ -1,5 +1,5 @@
 {
-    "user":[
+    "users":[
         {"name":"test1", "firstname":"test1", "email":"mail1@mail.fr", "password":"1234"},
         {"name":"test2", "firstname":"test2", "email":"mail2@mail.fr", "password":"1234"},
         {"name":"test3", "firstname":"test3", "email":"mail3@mail.fr", "password":"1234"},
