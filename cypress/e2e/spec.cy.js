@@ -1,6 +1,6 @@
 describe('Test utilisateur', () => {
   it('Modification du compte existe', () => {
-    cy.visit('https://localhost:8000/register/update/1')
+    cy.visit('https://securite.adrardev.fr/register/update/1')
     cy.get('#register_firstname').clear().type("Mathieu2")
     cy.get('#register_name').clear().type("Mithridate2")
     cy.get('#register_email').clear().type("mathieu.mith@laposte.net")
@@ -11,7 +11,7 @@ describe('Test utilisateur', () => {
       let dateTest = new Date();
       dateTest = dateTest.getFullYear()+"-"+(dateTest.getMonth()+1)+"-"+dateTest.getDate();
       let statut = true;
-      const url = "https://localhost:8000/tests/validation";
+      const url = "https://securite.adrardev.fr/tests/validation";
       if(text=="Le compte a été mis à jour en BDD"){
       }
       else{
@@ -33,7 +33,7 @@ describe('Test utilisateur', () => {
     })
   })
   it('Modification du compte n\'existe pas', () => {
-    cy.visit('https://localhost:8000/register/update/1')
+    cy.visit('https://securite.adrardev.fr/register/update/1')
     cy.get('strong').should("contain", "le compte n'existe pas")
   })
 })
